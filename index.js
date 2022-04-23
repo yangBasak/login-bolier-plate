@@ -4,12 +4,13 @@ const port = 5000;
 const bodyParser = require("body-parser");
 const config = require("./config/key");
 const { User } = require("./models/user");
+const mongoose = require("mongoose");
 
+//bodyParser 설정
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const mongoose = require("mongoose");
-console.log(config.mongoURI)
+//mongoDB 연결
 mongoose
   .connect(config.mongoURI, {
     useNewUrlParser: true,
@@ -22,6 +23,7 @@ mongoose
     console.log(err);
   });
 
+// 라우터 설정
 app.get("/", (req, res) => {
   res.send("Hello World!!");
 });
@@ -33,8 +35,10 @@ app.post("/register", (req, res) => {
       success: true,
     });
   });
+
 });
 
+//서버 실행
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
