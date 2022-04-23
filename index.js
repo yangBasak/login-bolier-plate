@@ -2,14 +2,16 @@ const express = require("express");
 const app = express();
 const port = 5000;
 const bodyParser = require("body-parser");
+const config = require("./config/key");
 const { User } = require("./models/user");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const mongoose = require("mongoose");
+console.log(config.mongoURI)
 mongoose
-  .connect("mongodb+srv://yangBasak:ananshkfzn5$@bolierplate.ttepu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
+  .connect(config.mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -21,7 +23,7 @@ mongoose
   });
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Hello World!!");
 });
 app.post("/register", (req, res) => {
   const user = new User(req.body);
