@@ -35,7 +35,32 @@ app.post("/register", (req, res) => {
       success: true,
     });
   });
-
+});
+app.post("/login", (res, req) => {
+  // 1. 요청된 이메일 DB에 있는지
+  User.findOne({ email: req.body.email }, (err, user) => {
+    if (!user) {
+      return res.json({
+        loginSuccess: false,
+        message: "이메일 없음",
+      });
+    }
+    // 2. DB에 있으면 비밀번호 확인
+    user.comparePassword(req.body.password, (err, isMatch) => {
+      /*
+        user는 현재 find 된 유저 정보. 여기서 .을 찍는게 무슨의미이지? 
+        그리고 comparePassword가 user.js쪽에 있는데 거기 있는 메소드를 어떻게 실행시킨거야? 
+      */
+      if (!isMatch) {
+        return res.json({
+          loginSuccess: false,
+          message: "비밀번호 틀림",
+        });
+      }
+      //3. 토큰 생성
+      user.getToken((err, user) => {});
+    });
+  });
 });
 
 //서버 실행
