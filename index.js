@@ -4,6 +4,7 @@ const port = 5000;
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const config = require("./config/key");
+const { auth } = require("./middleware/auth");
 const { User } = require("./models/user");
 const mongoose = require("mongoose");
 
@@ -31,7 +32,7 @@ mongoose
 app.get("/", (req, res) => {
   res.send("Hello World!!");
 });
-app.post("/register", (req, res) => {
+app.post("/api/user/register", (req, res) => {
   const user = new User(req.body);
   user.save((err, doc) => {
     if (err) return res.json({ success: false, err });
@@ -40,7 +41,7 @@ app.post("/register", (req, res) => {
     });
   });
 });
-app.post("/login", (req, res) => {
+app.post("/api/user/login", (req, res) => {
   // 1. 요청된 이메일 DB에 있는지
   User.findOne({ email: req.body.email }, (err, user) => {
     if (!user) {
@@ -66,6 +67,26 @@ app.post("/login", (req, res) => {
   });
 });
 
+app.get("/api/user/auth", auth, (req, res) => {
+  // auth는 인증해주는 미들웨어
+  res.status(200),
+    json({
+      _id: req.user._id,
+      isAdmin: req.user.role === 0 ? false : true, //0이면 일반, 아니면 관리자st
+      isAuth: true,
+      email: req.user.email,
+      lastname: req.user.lastname,
+      role: req.user.role,
+      image: req.user.image,
+    });
+});
+
+app.get("/api/user/logout", auth, (req, res) => {
+  User.findOneAndUpdate({ _id: req.user._id }, { token: "" }, (err, user) => {
+    if (err) return res.json({ success: false, err });
+    res.status(200).send({ success: true });
+  });
+});
 //서버 실행
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
