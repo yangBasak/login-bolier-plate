@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const port = 5000;
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const config = require("./config/key");
@@ -87,7 +86,13 @@ app.get("/api/user/logout", auth, (req, res) => {
     res.status(200).send({ success: true });
   });
 });
+
+app.get("/api/hello", (req, res) => {
+  return res.send("hi");
+});
+
 //서버 실행
+const port = 5000;
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
