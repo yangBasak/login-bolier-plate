@@ -7,8 +7,7 @@ function LandingPage() {
       console.log(response);
     });
   });
-
-  return <div>랜딩</div>;
+  return <div>랜d딩</div>;
 }
 
 export default LandingPage;
