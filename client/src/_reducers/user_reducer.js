@@ -1,4 +1,4 @@
-import { LOGIN_USER } from "../_actions/types";
+import { LOGIN_USER, REGISTER_USER } from "../_actions/types";
 
 export default function (state = {}, action) {
   // action에서 보내오는 타입들로 구분하기 위해 switch문 사용
@@ -6,7 +6,8 @@ export default function (state = {}, action) {
     case LOGIN_USER:
       return { ...state, loginSuccess: action.payload };
 
-      break;
+    case REGISTER_USER:
+      return { ...state, register: action.payload };
 
     default:
       return state;
