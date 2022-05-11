@@ -68,16 +68,15 @@ app.post("/api/user/login", (req, res) => {
 
 app.get("/api/user/auth", auth, (req, res) => {
   // auth는 인증해주는 미들웨어
-  res.status(200),
-    json({
-      _id: req.user._id,
-      isAdmin: req.user.role === 0 ? false : true, //0이면 일반, 아니면 관리자st
-      isAuth: true,
-      email: req.user.email,
-      lastname: req.user.lastname,
-      role: req.user.role,
-      image: req.user.image,
-    });
+  res.status(200).json({
+    _id: req.user._id,
+    isAdmin: req.user.role === 0 ? false : true, //0이면 일반, 아니면 관리자st
+    isAuth: true,
+    email: req.user.email,
+    lastname: req.user.lastname,
+    role: req.user.role,
+    image: req.user.image,
+  });
 });
 
 app.get("/api/user/logout", auth, (req, res) => {

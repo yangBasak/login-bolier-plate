@@ -23,6 +23,7 @@ function LoginPage() {
       password: password,
     };
     dispatch(loginUser(param)).then((res) => {
+      console.log(res);
       if (res.payload.loginSuccess) {
         navigate("/");
       } else {
@@ -44,4 +45,5 @@ function LoginPage() {
   );
 }
 
+// export default LoginPage;
 export default LoginPage;
